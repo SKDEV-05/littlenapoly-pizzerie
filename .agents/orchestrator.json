@@ -1,0 +1,48 @@
+{
+  "system": "Little Napoli Enterprise Multi-Agent Orchestrator",
+  "version": "2.0.0",
+  "environment": "production",
+  "business": {
+    "name": "Little Napoli - L'Autentica Pizza Napoletana",
+    "location": "Hauptstraße 44, 2325 Himberg bei Wien, Austria",
+    "phone": "+43 2235 42733",
+    "domain": "https://littlenapoli.at",
+    "jurisdiction": "AT",
+    "vat_rates": {
+      "food_and_soft_drinks": 0.10,
+      "alcoholic_beverages": 0.20
+    }
+  },
+  "agents": [
+    {
+      "id": "fullstack-laravel-lead",
+      "role": "Principal Laravel API & Enterprise Database Architect",
+      "file": "agents/fullstack-laravel-lead.md",
+      "scope": ["apps/backend-laravel", "system-design/erd-data-model.md", "rules/01-laravel-architecture.md", "rules/05-database-eloquent.md", "rules/06-ordering-payments.md"]
+    },
+    {
+      "id": "threejs-graphics-engineer",
+      "role": "Lead 3D WebGL / R3F / GLSL Graphics Engineer",
+      "file": "agents/threejs-graphics-engineer.md",
+      "scope": ["apps/frontend-nextjs/components/canvas", "rules/03-threejs-webgl.md", "commands/build-3d-pizza.md"]
+    },
+    {
+      "id": "frontend-nextjs-architect",
+      "role": "Lead Next.js 15 & React 19 Frontend Architect",
+      "file": "agents/frontend-nextjs-architect.md",
+      "scope": ["apps/frontend-nextjs", "rules/02-nextjs-react19.md", "rules/04-seo-localization.md"]
+    },
+    {
+      "id": "seo-performance-director",
+      "role": "Director of Technical SEO, Hyper-Local Targeting & Core Web Vitals",
+      "file": "agents/seo-performance-director.md",
+      "scope": ["rules/04-seo-localization.md", "commands/audit-seo.md", "apps/frontend-nextjs/app/[locale]/layout.tsx"]
+    },
+    {
+      "id": "qa-security-auditor",
+      "role": "Staff QA Engineer, Fiscal Compliance & Security Auditor",
+      "file": "agents/qa-security-auditor.md",
+      "scope": ["rules/07-security-gdpr.md", "rules/08-testing-devops.md", "commands/run-pest-tests.md", "commands/deploy-check.md"]
+    }
+  ]
+}

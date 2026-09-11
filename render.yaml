@@ -1,0 +1,56 @@
+# Render.com Blueprint for Little Napoli
+# Automates PostgreSQL database and Laravel backend deployment
+
+services:
+  # 1. Laravel API Backend Web Service (Docker + PostgreSQL)
+  - type: web
+    name: little-napoli-backend
+    env: docker
+    dockerfilePath: apps/backend-laravel/Dockerfile
+    dockerContext: apps/backend-laravel
+    plan: free
+    region: frankfurt # Low latency for Austria & Europe (Frankfurt)
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_NAME
+        value: "Little Napoli Backend"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: APP_KEY
+        value: "base64:lzj9nkaq/t/LIRriS89COXq3A/wxdC9iEHyeQQ7Cz70="
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: little-napoli-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: little-napoli-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: little-napoli-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: little-napoli-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: little-napoli-db
+          property: password
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://littlenapoli.at,http://localhost:3000,http://127.0.0.1:3000,*"
+
+databases:
+  # 2. Managed PostgreSQL Database (Free tier)
+  - name: little-napoli-db
+    plan: free
+    region: frankfurt
+    databaseName: little_napoli
+    user: napoli_admin

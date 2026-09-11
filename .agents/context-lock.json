@@ -1,0 +1,32 @@
+{
+  "project": "Little Napoli Digital Commerce & 3D Immersive Experience",
+  "hash_algorithm": "SHA-256",
+  "compliance_locks": {
+    "austrian_vat_act_ustg": {
+      "food_tax_rate": "10.00%",
+      "soft_drink_tax_rate": "10.00%",
+      "alcohol_tax_rate": "20.00%",
+      "strict_mode": true
+    },
+    "austrian_allergen_codex": {
+      "standard": "Codex Alimentarius Austriacus",
+      "letters": ["A", "B", "C", "D", "E", "F", "G", "H", "L", "M", "N", "O", "P", "R"],
+      "strict_mode": true
+    },
+    "nap_identity": {
+      "legal_name": "Little Napoli - L'Autentica Pizza Napoletana",
+      "address": "Hauptstraße 44, 2325 Himberg bei Wien",
+      "district": "Bruck an der Leitha",
+      "state": "Niederösterreich",
+      "country": "Austria",
+      "coordinates": {
+        "latitude": 48.0772,
+        "longitude": 16.4447
+      },
+      "telephone": "+43 2235 42733",
+      "domain": "https://littlenapoli.at"
+    }
+  },
+  "menu_items_count": 51,
+  "categories_count": 7
+}

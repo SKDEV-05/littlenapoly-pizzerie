@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { DishImageUpload } from '@/components/admin/DishImageUpload';
 import {
   ShieldCheck,
   Lock,
@@ -948,6 +949,7 @@ export default function AdminDashboardPage() {
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, 300px"
+                        unoptimized={Boolean(item.imageSrc?.startsWith('data:') || item.imageSrc?.startsWith('blob:'))}
                       />
                       <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white uppercase tracking-wider">
                         {item.categorySlug.replace(/-/g, ' ')}
@@ -1058,7 +1060,7 @@ export default function AdminDashboardPage() {
       {/* ============================================================ */}
       {isAddDishModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="w-full max-w-lg bg-white dark:bg-[#18120E] border border-stone-200 dark:border-stone-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-2xl">
+          <div className="w-full max-w-lg max-h-[92vh] overflow-y-auto bg-white dark:bg-[#18120E] border border-stone-200 dark:border-stone-800 rounded-3xl p-5 sm:p-7 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between">
               <h3 className="font-poppins font-bold text-lg text-stone-900 dark:text-white">
                 Neues Gericht anlegen
@@ -1093,7 +1095,7 @@ export default function AdminDashboardPage() {
                   imageSrc: '/images/pizza-margherita.jpg',
                 });
               }}
-              className="space-y-3 text-xs"
+              className="space-y-3.5 text-xs"
             >
               <div className="space-y-1">
                 <Label>Name des Gerichts</Label>
@@ -1145,16 +1147,14 @@ export default function AdminDashboardPage() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <Label>Bildpfad oder URL</Label>
-                <Input
-                  value={newDishForm.imageSrc}
-                  onChange={(e) => setNewDishForm({ ...newDishForm, imageSrc: e.target.value })}
-                  placeholder="/images/pizza-margherita.jpg"
-                />
-              </div>
+              <DishImageUpload
+                value={newDishForm.imageSrc}
+                onChange={(url) => setNewDishForm({ ...newDishForm, imageSrc: url })}
+                label="Gerichtsfoto / Bild (Upload mit Live-Vorschau)"
+                dishName={newDishForm.name || 'Neues Gericht'}
+              />
 
-              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-10 mt-2 cursor-pointer">
+              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-10 mt-3 cursor-pointer shadow-md">
                 Gericht in Speisekarte veröffentlichen
               </Button>
             </form>
@@ -1167,7 +1167,7 @@ export default function AdminDashboardPage() {
       {/* ============================================================ */}
       {editingItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
-          <div className="w-full max-w-lg bg-white dark:bg-[#18120E] border border-stone-200 dark:border-stone-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-2xl">
+          <div className="w-full max-w-lg max-h-[92vh] overflow-y-auto bg-white dark:bg-[#18120E] border border-stone-200 dark:border-stone-800 rounded-3xl p-5 sm:p-7 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between">
               <h3 className="font-poppins font-bold text-lg text-stone-900 dark:text-white">
                 Gericht bearbeiten: {editingItem.name}
@@ -1184,10 +1184,11 @@ export default function AdminDashboardPage() {
                   name: editingItem.name,
                   price: Number(editingItem.price),
                   ingredients: editingItem.ingredients,
+                  imageSrc: editingItem.imageSrc,
                 });
                 setEditingItem(null);
               }}
-              className="space-y-3 text-xs"
+              className="space-y-3.5 text-xs"
             >
               <div className="space-y-1">
                 <Label>Name</Label>
@@ -1198,15 +1199,25 @@ export default function AdminDashboardPage() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <Label>Preis (€)</Label>
-                <Input
-                  type="number"
-                  step="0.1"
-                  required
-                  value={editingItem.price}
-                  onChange={(e) => setEditingItem({ ...editingItem, price: Number(e.target.value) })}
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label>Preis (€)</Label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={editingItem.price}
+                    onChange={(e) => setEditingItem({ ...editingItem, price: Number(e.target.value) })}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label>Kategorie</Label>
+                  <Input
+                    disabled
+                    value={editingItem.categorySlug.replace(/-/g, ' ')}
+                    className="opacity-70 capitalize"
+                  />
+                </div>
               </div>
 
               <div className="space-y-1">
@@ -1218,7 +1229,14 @@ export default function AdminDashboardPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-10 mt-2 cursor-pointer">
+              <DishImageUpload
+                value={editingItem.imageSrc || ''}
+                onChange={(url) => setEditingItem({ ...editingItem, imageSrc: url })}
+                label="Gerichtsfoto ändern (Upload mit Live-Vorschau)"
+                dishName={editingItem.name}
+              />
+
+              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-10 mt-3 cursor-pointer shadow-md">
                 Änderungen speichern
               </Button>
             </form>

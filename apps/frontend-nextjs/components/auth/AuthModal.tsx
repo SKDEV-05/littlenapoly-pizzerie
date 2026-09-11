@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Sparkles,
   ArrowRight,
+  Heart,
 } from 'lucide-react';
 
 export function AuthModal() {
@@ -26,6 +27,7 @@ export function AuthModal() {
     isAuthModalOpen,
     authModalTab,
     authRedirectCallback,
+    authPromptMessage,
     closeAuthModal,
     openAuthModal,
     login,
@@ -142,6 +144,14 @@ export function AuthModal() {
               : 'Erstellen Sie ein Konto für schnellere Bestellungen und exklusive Vorteile.'}
           </p>
         </div>
+
+        {/* Special Auth Prompt (e.g. Liking dishes / Favorites) */}
+        {authPromptMessage && (
+          <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs font-semibold shadow-xs">
+            <Heart className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 fill-red-600" />
+            <span>{authPromptMessage}</span>
+          </div>
+        )}
 
         {/* Tab Switcher */}
         <div className="flex rounded-xl bg-stone-100 dark:bg-stone-900 p-1 border border-stone-200 dark:border-stone-800 text-xs font-bold">

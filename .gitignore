@@ -1,0 +1,37 @@
+# Root Monorepo Gitignore
+
+# Node & Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# PHP & Laravel
+vendor/
+.phpunit.result.cache
+.phpunit.cache/
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Environment files
+.env
+.env*.local
+.env.backup
+.env.production
+.env.testing
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/

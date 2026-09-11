@@ -10,6 +10,7 @@ export interface User {
   phone: string;
   role: 'customer' | 'admin';
   createdAt: string;
+  favoriteIds?: number[];
 }
 
 // Initial pre-configured accounts
@@ -22,6 +23,7 @@ const SEED_USERS: (User & { passwordHash: string })[] = [
     role: 'admin',
     createdAt: '2026-01-01T10:00:00.000Z',
     passwordHash: 'admin123',
+    favoriteIds: [1, 2],
   },
   {
     id: 'usr_cust_01',
@@ -31,6 +33,7 @@ const SEED_USERS: (User & { passwordHash: string })[] = [
     role: 'customer',
     createdAt: '2026-02-15T14:30:00.000Z',
     passwordHash: 'kunde123',
+    favoriteIds: [2, 5],
   },
 ];
 
@@ -40,9 +43,11 @@ interface AuthState {
   isAuthModalOpen: boolean;
   authModalTab: 'signin' | 'signup';
   authRedirectCallback?: string | null;
+  authPromptMessage?: string | null;
 
-  openAuthModal: (tab?: 'signin' | 'signup', redirectCallback?: string | null) => void;
+  openAuthModal: (tab?: 'signin' | 'signup', redirectCallback?: string | null, promptMessage?: string | null) => void;
   closeAuthModal: () => void;
+  toggleFavorite: (dishId: number) => { success: boolean; requiresAuth?: boolean };
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (
     name: string,
@@ -63,17 +68,47 @@ export const useAuthStore = create<AuthState>()(
       isAuthModalOpen: false,
       authModalTab: 'signin',
       authRedirectCallback: null,
+      authPromptMessage: null,
 
-      openAuthModal: (tab = 'signin', redirectCallback = null) => {
+      openAuthModal: (tab = 'signin', redirectCallback = null, promptMessage = null) => {
         set({
           isAuthModalOpen: true,
           authModalTab: tab,
           authRedirectCallback: redirectCallback,
+          authPromptMessage: promptMessage,
         });
       },
 
       closeAuthModal: () => {
-        set({ isAuthModalOpen: false, authRedirectCallback: null });
+        set({ isAuthModalOpen: false, authRedirectCallback: null, authPromptMessage: null });
+      },
+
+      toggleFavorite: (dishId: number) => {
+        const user = get().currentUser;
+        if (!user) {
+          get().openAuthModal(
+            'signin',
+            null,
+            'Bitte melden Sie sich an, um Gerichte in Ihren persönlichen Favoriten zu speichern ❤️'
+          );
+          return { success: false, requiresAuth: true };
+        }
+
+        const currentFavs = user.favoriteIds || [];
+        const isFav = currentFavs.includes(dishId);
+        const newFavs = isFav ? currentFavs.filter((id) => id !== dishId) : [...currentFavs, dishId];
+
+        const updatedUser: User = { ...user, favoriteIds: newFavs };
+        const updatedUsers = get().registeredUsers.map((u) =>
+          u.id === user.id ? { ...u, favoriteIds: newFavs } : u
+        );
+
+        set({
+          currentUser: updatedUser,
+          registeredUsers: updatedUsers,
+        });
+
+        return { success: true, requiresAuth: false };
       },
 
       login: async (email: string, password: string) => {

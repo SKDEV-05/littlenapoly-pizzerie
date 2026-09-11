@@ -52,11 +52,6 @@ export function HeaderNav() {
     setIsMounted(true);
   }, []);
 
-  // Hide the public header on Admin pages so there is ONLY ONE admin navbar!
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
-
   // Lock body scroll when mobile drawer is active
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -68,6 +63,11 @@ export function HeaderNav() {
       document.body.style.overflow = '';
     };
   }, [mobileMenuOpen]);
+
+  // Hide the public header on Admin pages so there is ONLY ONE admin navbar!
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const formatEuro = (val: number) =>
     new Intl.NumberFormat('de-AT', {

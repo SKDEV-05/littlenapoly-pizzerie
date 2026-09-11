@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { AllergenBadge } from '@/components/ui/AllergenBadge';
 import { useCartStore } from '@/lib/cart';
 import { useFavoritesStore } from '@/lib/favorites';
+import { useAuthStore } from '@/lib/authStore';
 import { useI18n } from '@/lib/i18n';
 import {
   Search,
@@ -708,6 +709,8 @@ function MenuGridInner({ showHeader = true }: MenuGridProps) {
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const openAuthModal = useAuthStore((state) => state.openAuthModal);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
   const [addedItemId, setAddedItemId] = useState<number | null>(null);
@@ -771,6 +774,9 @@ function MenuGridInner({ showHeader = true }: MenuGridProps) {
   ];
 
   const handleSelectCategory = (catSlug: string) => {
+    if (catSlug === 'favorites' && !currentUser) {
+      openAuthModal('signin', null, 'Bitte melden Sie sich an, um Ihre persönlichen Favoriten anzuzeigen ❤️');
+    }
     setActiveCategory(catSlug);
     // Update URL query parameter
     if (typeof window !== 'undefined') {
@@ -1269,6 +1275,7 @@ function MenuGridInner({ showHeader = true }: MenuGridProps) {
                             fill
                             className="object-cover group-hover:scale-106 transition-transform duration-500"
                             sizes="(max-width: 640px) 50vw, (max-width: 1200px) 50vw, 33vw"
+                            unoptimized={Boolean(item.imageSrc?.startsWith('data:') || item.imageSrc?.startsWith('blob:'))}
                           />
                         </Link>
 
@@ -1382,14 +1389,24 @@ function MenuGridInner({ showHeader = true }: MenuGridProps) {
                         ? 'Try resetting the price range, category, or search query to explore our complete menu.'
                         : 'Versuchen Sie, den Preisfilter oder die Suchbegriffe zurückzusetzen, um alle Gerichte zu sehen.')}
                 </p>
-                <Button
-                  variant="outline"
-                  onClick={resetFilters}
-                  className="gap-2 rounded-xl text-xs font-bold border-stone-300 dark:border-stone-700 cursor-pointer"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 text-napoli-red" />
-                  <span>{locale === 'en' ? 'Reset All Filters' : 'Filter zurücksetzen'}</span>
-                </Button>
+                {!currentUser && (dietaryFilter === 'favorites' || activeCategory === 'favorites') ? (
+                  <Button
+                    onClick={() => openAuthModal('signin', null, 'Bitte melden Sie sich an, um Ihre persönlichen Favoriten zu laden ❤️')}
+                    className="gap-2 rounded-xl text-xs font-bold bg-napoli-red hover:bg-red-700 text-white cursor-pointer shadow-md"
+                  >
+                    <Heart className="w-3.5 h-3.5 fill-white" />
+                    <span>Jetzt anmelden &amp; Favoriten laden</span>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={resetFilters}
+                    className="gap-2 rounded-xl text-xs font-bold border-stone-300 dark:border-stone-700 cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 text-napoli-red" />
+                    <span>{locale === 'en' ? 'Reset All Filters' : 'Filter zurücksetzen'}</span>
+                  </Button>
+                )}
               </div>
             )}
 
