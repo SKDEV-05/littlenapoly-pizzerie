@@ -1,0 +1,38 @@
+# Composer Dependencies
+/vendor/
+
+# Environment Variables & Secrets
+.env
+.env.backup
+.env.production
+.env.testing
+
+# Laravel Framework Storage
+/storage/*.key
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/app/public/*
+
+# Testing & Cache
+.phpunit.result.cache
+.phpunit.cache/
+
+# NPM & Node (if used in backend)
+/node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Server & Tools
+Homestead.json
+Homestead.yaml
+auth.json
+
+# Editor & OS Artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
