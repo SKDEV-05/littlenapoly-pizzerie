@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "Little Napoli",
+    "tagline": "L'Autentica Pizza Napoletana",
+    "location": "Hauptstraße 44, 2325 Himberg bei Wien",
+    "phone": "+43 2235 42733"
+  },
+  "nav": {
+    "menu": "Speisekarte",
+    "experience3d": "3D Pizza Erlebnis",
+    "reservation": "Tischreservierung",
+    "order": "Warenkorb"
+  },
+  "hero": {
+    "title": "L'Autentica Pizza Napoletana in Himberg bei Wien",
+    "description": "48 Stunden Teigruhe, 485°C Holzofenhitze, San Marzano D.O.P. und Sorrento Fior di Latte.",
+    "ctaMenu": "Speisekarte & Bestellen",
+    "ctaReservation": "Tisch Reservieren"
+  },
+  "allergens": {
+    "title": "Allergeninformation (Codex Alimentarius Österreich)",
+    "disclaimer": "Alle Angaben basieren auf den gesetzlichen Bestimmungen der Republik Österreich."
+  }
+}

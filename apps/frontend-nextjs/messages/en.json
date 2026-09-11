@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "name": "Little Napoli",
+    "tagline": "The Authentic Neapolitan Pizza",
+    "location": "Hauptstraße 44, 2325 Himberg near Vienna",
+    "phone": "+43 2235 42733"
+  },
+  "nav": {
+    "menu": "Menu",
+    "experience3d": "3D Pizza Experience",
+    "reservation": "Table Booking",
+    "order": "Cart"
+  },
+  "hero": {
+    "title": "The Authentic Neapolitan Pizza in Himberg near Vienna",
+    "description": "48 hours slow cold fermentation, 485°C wood-fired oven, San Marzano D.O.P. and Sorrento Fior di Latte.",
+    "ctaMenu": "Menu & Order",
+    "ctaReservation": "Book a Table"
+  },
+  "allergens": {
+    "title": "Allergen Information (Austrian Codex Alimentarius)",
+    "disclaimer": "All declarations follow the statutory food codex of the Republic of Austria."
+  }
+}
