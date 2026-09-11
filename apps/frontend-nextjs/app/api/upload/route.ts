@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
 
     // Also attempt saving into Laravel backend public storage if online
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const rawBackend = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+      const backendUrl = rawBackend.replace(/\/api\/v1$/, '');
       const laravelFormData = new FormData();
       laravelFormData.append('image', new Blob([buffer], { type: file.type }), safeName);
       

@@ -32,7 +32,8 @@ export interface ApiCategory {
   items?: ApiMenuItem[];
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const rawUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+const API_BASE_URL = rawUrl.endsWith('/api/v1') ? rawUrl : `${rawUrl}/api/v1`;
 
 export async function fetchCategories(): Promise<ApiCategory[]> {
   try {
